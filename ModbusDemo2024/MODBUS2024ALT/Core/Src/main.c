@@ -51,6 +51,8 @@ DMA_HandleTypeDef hdma_usart2_rx;
 ModbusHandleTypedef hmodbus;
 u16u8_t registerFrame[200]; //middle between base n z axis (they will see the same.)
 uint16_t shelfPos[5];
+uint16_t pingpong;
+uint16_t setPos;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -124,8 +126,9 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	  Modbus_Protocal_Worker();
-	  static unit_16t timestamp = 0;
-	  if(registerFrame[0x01].U16 == 1) //Set shelves
+	  static uint16_t timestamp = 0;
+	  //Set shelves
+	  if(registerFrame[0x01].U16 == 1)
 	  {
 		  registerFrame[0x01].U16 = 0;
 		  registerFrame[0x10].U16 = 1;
@@ -135,18 +138,24 @@ int main(void)
 		  registerFrame[0x26].U16 = shelfPos[3];
 		  registerFrame[0x27].U16 = shelfPos[4];
 		  //delay 2000ms
-		  HAL_GetTick() = timestamp +2000;
+		  timestamp = HAL_GetTick()+2000;
 	  }
-	  if(HAL_GetTrick >= timestamp && registerFrame[0x10].U16 == 1)
+	  if(HAL_GetTick >= timestamp && registerFrame[0x10].U16 == 1)
 	  {
 		  registerFrame[0x10].U16 = 0;
 	  }
-
-	  if(registerFrame[0x01].U16 == 2) //Home
+	  //Home
+	  if(registerFrame[0x01].U16 == 2)
 	  {
-
+		  registerFrame[0x01].U16 = 0;
+		  registerFrame[0x10].U16 = 1;
 	  }
-	  if(registerFrame[0x01].U16 == 4) //Run jog mode
+	  if(pingpong == 1)
+	  {
+		  registerFrame[0x10].U16 = 0;
+	  }
+	  //Run jog mode
+	  if(registerFrame[0x01].U16 == 4)
 	  {
 
 	  }
