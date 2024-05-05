@@ -49,6 +49,11 @@ DMA_HandleTypeDef hdma_usart2_rx;
 
 /* USER CODE BEGIN PV */
 ModbusHandleTypedef hmodbus;
+
+uint8_t vacuum;
+uint8_t gripper;
+uint8_t reed;
+
 u16u8_t registerFrame[200]; //middle between base n z axis (they will see the same.)
 uint16_t shelfPos[5];
 uint16_t pingpong;
@@ -111,6 +116,8 @@ int main(void)
   hmodbus.slaveAddress = 0x15;
   hmodbus.RegisterSize =200;
   Modbus_init(&hmodbus, registerFrame);
+  reed = 0;
+
   shelfPos[0] = 1;
   shelfPos[1] = 2;
   shelfPos[2] = 3;
@@ -126,6 +133,11 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	  Modbus_Protocal_Worker();
+
+	  vacuum = registerFrame[0x02].U16;
+	  gripper = registerFrame[0x03].U16;
+	  registerFrame[0x04].U16 = reed;
+
 	  static uint16_t timestamp = 0;
 	  //Set shelves
 	  if(registerFrame[0x01].U16 == 1)
@@ -150,7 +162,7 @@ int main(void)
 		  registerFrame[0x01].U16 = 0;
 		  registerFrame[0x10].U16 = 1;
 	  }
-	  if(pingpong == 1)
+	  if(pingpong == 1)//check pingpong status
 	  {
 		  registerFrame[0x10].U16 = 0;
 	  }
@@ -161,7 +173,8 @@ int main(void)
 	  }
 	  if(registerFrame[0x01].U16 == 8) //Run point mode
 	  {
-
+		  registerFrame[0x01].U16 = 0;
+		  registerFrame[0x10].U16 = 16;
 	  }
 
 
