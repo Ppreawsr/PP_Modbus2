@@ -50,7 +50,7 @@ DMA_HandleTypeDef hdma_usart2_rx;
 /* USER CODE BEGIN PV */
 ModbusHandleTypedef hmodbus;
 u16u8_t registerFrame[200]; //middle between base n z axis (they will see the same.)
-uint16_t shelvePos[5];
+uint16_t shelfPos[5];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -109,11 +109,11 @@ int main(void)
   hmodbus.slaveAddress = 0x15;
   hmodbus.RegisterSize =200;
   Modbus_init(&hmodbus, registerFrame);
-  shelvePos[0] = 1;
-  shelvePos[1] = 2;
-  shelvePos[2] = 3;
-  shelvePos[3] = 4;
-  shelvePos[4] = 5;
+  shelfPos[0] = 1;
+  shelfPos[1] = 2;
+  shelfPos[2] = 3;
+  shelfPos[3] = 4;
+  shelfPos[4] = 5;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -124,7 +124,36 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	  Modbus_Protocal_Worker();
+	  static unit_16t timestamp = 0;
+	  if(registerFrame[0x01].U16 == 1) //Set shelves
+	  {
+		  registerFrame[0x01].U16 = 0;
+		  registerFrame[0x10].U16 = 1;
+		  registerFrame[0x23].U16 = shelfPos[0];
+		  registerFrame[0x24].U16 = shelfPos[1];
+		  registerFrame[0x25].U16 = shelfPos[2];
+		  registerFrame[0x26].U16 = shelfPos[3];
+		  registerFrame[0x27].U16 = shelfPos[4];
+		  //delay 2000ms
+		  HAL_GetTick() = timestamp +2000;
+	  }
+	  if(HAL_GetTrick >= timestamp && registerFrame[0x10].U16 == 1)
+	  {
+		  registerFrame[0x10].U16 = 0;
+	  }
 
+	  if(registerFrame[0x01].U16 == 2) //Home
+	  {
+
+	  }
+	  if(registerFrame[0x01].U16 == 4) //Run jog mode
+	  {
+
+	  }
+	  if(registerFrame[0x01].U16 == 8) //Run point mode
+	  {
+
+	  }
 
 
 
