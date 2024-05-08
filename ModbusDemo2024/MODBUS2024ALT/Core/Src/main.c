@@ -244,7 +244,7 @@ int main(void)
 	  		else if(piingpong && registerFrame[0x10].U16 == 4)// prev mode: pick, do place
 	  		{
 	  			//////pick up
-	  			if(reed != 2)
+	  			if(reed  nmm!= 2)
 	  			{
 	  				registerFrame[0x03].U16 = 1; //gripper forward
 	  			}
