@@ -170,7 +170,7 @@ int main(void)
 		  registerFrame[0x10].U16 = 2;
 		  setPos =  shelfPos[0];
 	  }
-	  //Run point mode
+	  //point mode
 	  if(registerFrame[0x01].U16 == 8)
 	  {
 		  registerFrame[0x01].U16 = 0;
@@ -182,7 +182,7 @@ int main(void)
 	  {
 		  registerFrame[0x10].U16 = 0;
 	  }
-/////////Run jog mode
+	  //jog mode
 	  if((registerFrame[0x01].U16 == 4))
 	  {
 		  registerFrame[0x01].U16 = 0; //reset status
@@ -244,7 +244,7 @@ int main(void)
 	  		else if(piingpong && registerFrame[0x10].U16 == 4)// prev mode: pick, do place
 	  		{
 	  			//////pick up
-	  			if(reed  nmm!= 2)
+	  			if(reed != 2)
 	  			{
 	  				registerFrame[0x03].U16 = 1; //gripper forward
 	  			}

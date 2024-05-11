@@ -1657,7 +1657,7 @@ int main(void)
  8000cc6:	2200      	movs	r2, #0
  8000cc8:	841a      	strh	r2, [r3, #32]
 	  }
-/////////Run jog mode
+	  //Run jog mode
 	  if((registerFrame[0x01].U16 == 4))
  8000cca:	4b3e      	ldr	r3, [pc, #248]	@ (8000dc4 <main+0x254>)
  8000ccc:	885b      	ldrh	r3, [r3, #2]
